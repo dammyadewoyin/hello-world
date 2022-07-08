@@ -11,9 +11,23 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - print_pipeline_id
+  print_error:
+    docker:
+     - image: circleci/node:13.8.0
+    steps:
+      - run: 
+          name: "exit with non zero code"
+          command: 
+            echo return 1
+      - run:
+          name: "print error"
+          command:
+            echo "Hello error!"
+          when: on_fail
 workflows:
   # Name the workflow "welcome"
   reuse_code:
     # Run the welcome/run job in its own container
     jobs:
       - new_job
+      - print_error
